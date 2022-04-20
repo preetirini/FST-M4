@@ -1,0 +1,35 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Try the new cross-platform PowerShell https://aka.ms/pscore6
+
+PS C:\WINDOWS\system32> docker container run -it -p 9877:9877 -p 8082:8082 registry.gitlab.com/training-support/training-environments:hadoop-v1 bash
+/
+ * Starting OpenBSD Secure Shell server sshd                             [ OK ]
+Waiting for hdfs to exit from safemode
+Safe mode is OFF
+Started
+root@23c74df999a6:/# vi txtFile.txt
+root@23c74df999a6:/# vi csvFile.csv
+root@23c74df999a6:/# hdfs dfs -mkdir /user/preeti/textData
+mkdir: `hdfs://23c74df999a6:9000/user/preeti': No such file or directory
+root@23c74df999a6:/# hdfs dfs -mkdir /user/preeti
+root@23c74df999a6:/# hdfs dfs -mkdir /user/preeti/textData
+root@23c74df999a6:/# hdfs dfs -copyFromLocal ./txtFile.txt /user/preeti/textData
+root@23c74df999a6:/# hdfs dfs -ls /user/preeti/textData
+Found 1 items
+-rw-r--r--   1 root supergroup        158 2022-04-20 08:01 /user/preeti/textData/txtFile.txt
+root@23c74df999a6:/# hdfs dfs -copyFromLocal ./csvFile.csv /user/preeti/textData
+root@23c74df999a6:/# hdfs dfs -ls /user/preeti/textData
+Found 2 items
+-rw-r--r--   1 root supergroup        516 2022-04-20 08:02 /user/preeti/textData/csvFile.csv
+-rw-r--r--   1 root supergroup        158 2022-04-20 08:01 /user/preeti/textData/txtFile.txt
+root@23c74df999a6:/# hdfs dfs -stat "type:%F permissions:%a %u:%g size:%b name:%n" /file
+stat: `/file': No such file or directory
+root@23c74df999a6:/# hdfs dfs -stat "type:%F permissions:%a :%u:%g size:%b name:%n" /user/preeti/textData/csvFile.csv
+type:regular file permissions:644 :root:supergroup size:516 name:csvFile.csv
+root@23c74df999a6:/# hdfs dfs -stat "type:%F permissions:%a :%u:%g size:%b name:%n" /user/preeti/textData/txtFile.txt
+type:regular file permissions:644 :root:supergroup size:158 name:txtFile.txt
+root@23c74df999a6:/#
+
+
